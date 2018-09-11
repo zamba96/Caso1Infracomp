@@ -12,6 +12,10 @@ public class Main {
 	
 	static int numConsultasClientes;
 	
+	static Servidor servidores[];
+	
+	static Buffer buffer;
+	
 	
 	/*
 	 * Formato del archivo:
@@ -40,6 +44,14 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		servidores = new Servidor[numServidores];
+		for(int i = 0; i < numServidores; i++) {
+			servidores[i] = new Servidor(buffer, i);
+		}
+		for(Servidor ser: servidores) {
+			ser.start();
+		}
+		
 		
 		
 

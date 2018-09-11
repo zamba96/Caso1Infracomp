@@ -19,7 +19,7 @@ public class Servidor extends Thread{
 			//mensaje = buffer.darMensaje();
 			while(mensaje == null) {
 				try {
-					sleep(200L);
+					sleep(200L); //Para que no exiga la CPU al 100% si no se está usando lol
 					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -28,8 +28,12 @@ public class Servidor extends Thread{
 				yield();
 				//mensaje = buffer.darMensaje();
 			}
-			mensaje.setRespuesta("respuesta");
-			mensaje.notify();
+			mensaje.setRespuesta("respuesta a pregunta: " + mensaje.getPregunta() + "\npor el servidor: " + id);
+			System.out.println(mensaje.getRespuesta());
+			
+			synchronized (mensaje) {
+				mensaje.notify();
+			}
 			
 		}
 	}

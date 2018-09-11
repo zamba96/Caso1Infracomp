@@ -18,11 +18,19 @@ public class Servidor extends Thread{
 			Mensaje mensaje = null;
 			//mensaje = buffer.darMensaje();
 			while(mensaje == null) {
+				try {
+					sleep(200L);
+					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				yield();
 				//mensaje = buffer.darMensaje();
 			}
 			mensaje.setRespuesta("respuesta");
 			mensaje.notify();
+			
 		}
 	}
 	

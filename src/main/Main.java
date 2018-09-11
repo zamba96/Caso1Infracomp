@@ -34,7 +34,7 @@ public class Main {
 			System.out.println("    Servidores: " + numServidores);
 			System.out.println("    Clientes: " + numClientes);
 			System.out.println("    Consultas por clientes: " + numConsultasClientes);
-			
+			in.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

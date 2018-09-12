@@ -1,6 +1,6 @@
 package main;
 
-public class Usuario {
+public class Usuario extends Thread{
 
 	//
 	/* crea el mensaje 
@@ -9,28 +9,43 @@ public class Usuario {
 	 *  
 	 */
 	/**
-	 * 
+	 * Mensaje que crea el usuario para enviar
 	 */
-	public Mensaje m;
+	private Mensaje mensaje;
 	
 	/**
-	 * 
+	 * Buffer al que envia el mensaje
 	 */
-	public Usuario(){
-		m = new Mensaje();
+	private Buffer buffer;
+	
+	/**
+	 * Id del usuario 
+	 */
+	private int id;
+	
+	/**
+	 * Constructor del cliente
+	 * Crea el mensaje y le da valor a la pregunta.
+	 * @param buffer Buffer que entra por parametro
+	 * @param id del usuario
+	 */
+	public Usuario(Buffer buffer, int id){
+		mensaje = new Mensaje();
+		mensaje.setPregunta("pregunta #" + id);
+		this.buffer = buffer;
+		this.id = id;
 	}
 	
-	/**
-	 * 
-	 */
-	private void enviar() {
-		//buffer.enviar();
-	}
-	
-	/**
-	 * 
-	 */
-	private void recibir() {
-		//buffer
+	public void run() {
+		//buffer.recibirMensaje()
+		while(-1==id ) {
+			yield();
+		}
+		try {
+			mensaje.wait();
+		}catch (Exception e) {
+			e.getStackTrace();
+		}
+		
 	}
 }

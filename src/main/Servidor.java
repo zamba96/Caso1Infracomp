@@ -18,18 +18,20 @@ public class Servidor extends Thread{
 			Mensaje mensaje = null;
 			mensaje = buffer.atender();
 			while(mensaje == null) {
+				/*
 				try {
-					sleep(200L); //Para que no exiga la CPU al 100% si no se está usando lol
+					sleep(200L); //Para que no exiga la CPU al 100% si no se estï¿½ usando lol
 					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				*/
 				yield();
 				mensaje = buffer.atender();
 			}
-			mensaje.setRespuesta("respuesta a pregunta: " + mensaje.getPregunta() + "\npor el servidor: " + id);
-			System.out.println(mensaje.getRespuesta());
+			mensaje.setRespuesta("respuesta a pregunta: " + mensaje.getPregunta() + "\npor el servidor: " + id + "\n=============");
+			
 			
 			synchronized (mensaje) {
 				mensaje.notify();

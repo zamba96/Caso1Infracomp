@@ -29,10 +29,12 @@ public class Usuario extends Thread{
 	 * @param buffer Buffer que entra por parametro
 	 * @param id del usuario
 	 */
-	public Usuario(Buffer buffer, int id){
-		mensajes = new Mensaje[1];
+	public Usuario(Buffer buffer, int id, int numMensajes){
+		mensajes = new Mensaje[numMensajes];
 		for(int i = 0;i <mensajes.length;i++ ) {
-			mensajes[i].setPregunta("pregunta #" + id +i);
+			mensajes[i] = new Mensaje();
+			mensajes[i].setPregunta("Pregunta de usuario " + id + ": " + i);
+			//mensajes[i].setPregunta("pregunta #" + id +i);
 		}
 		this.buffer = buffer;
 		this.id = id;
@@ -41,15 +43,20 @@ public class Usuario extends Thread{
 	@Override
 	public void run() {
 		for(int i = 0;i<mensajes.length; i++) {
+			
 			while( !buffer.enviar(mensajes[i])) {
 				yield();
 			}
 			try {
-				mensajes[i].wait();
+				synchronized (mensajes[i]) {
+					mensajes[i].wait();
+					System.out.println(mensajes[i].getRespuesta());
+				}
+				
 			}catch (Exception e) {
 				e.getStackTrace();
 			}
-			mensajes[i] = buffer.atender();
+			//mensajes[i] = buffer.atender();
 		}
 	}
 }

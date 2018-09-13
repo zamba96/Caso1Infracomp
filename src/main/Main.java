@@ -13,11 +13,10 @@ public class Main {
 	static int numConsultasClientes;
 
 	static Servidor servidores[];
-	
+
 	static Usuario usuarios[];
 
 	static Buffer buffer;
-
 
 	/*
 	 * Formato del archivo:
@@ -46,34 +45,37 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Crea el Buffer
+		// Crea el Buffer
 		buffer = new Buffer(tamanoBuffer);
-		
-		//Crea los servidores
+
+		// Crea los servidores
 		servidores = new Servidor[numServidores];
-		for(int i = 0; i < numServidores; i++) {
+		for (int i = 0; i < numServidores; i++) {
 			servidores[i] = new Servidor(buffer, i);
 		}
-		
-		//Crea los clientes
+
+		// Crea los clientes
 		usuarios = new Usuario[numClientes];
-		for(int i = 0; i < numClientes; i++) {
-			usuarios[i] = new Usuario(buffer, i);
+		for (int i = 0; i < numClientes; i++) {
+			usuarios[i] = new Usuario(buffer, i, numConsultasClientes);
 		}
-		
-		
-		//Lanza los threads de los usuarios
-		for(Usuario USSR : usuarios) {
-			USSR.start();
-		}
-		//Lanza los threads de los servidores
-		for(Servidor ser : servidores) {
+
+		// Lanza los threads de los servidores
+		for (Servidor ser : servidores) {
 			ser.start();
 		}
-		
-		
 
+		// Lanza los threads de los usuarios
 
+		for (Usuario USSR : usuarios) {
+			try {
+				USSR.sleep(1000L);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			USSR.start();
+		}
 
 	}
 

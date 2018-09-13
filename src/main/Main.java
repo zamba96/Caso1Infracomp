@@ -13,6 +13,8 @@ public class Main {
 	static int numConsultasClientes;
 
 	static Servidor servidores[];
+	
+	static Usuario usuarios[];
 
 	static Buffer buffer;
 
@@ -44,11 +46,28 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//Crea el Buffer
+		buffer = new Buffer(tamanoBuffer);
+		
+		//Crea los servidores
 		servidores = new Servidor[numServidores];
 		for(int i = 0; i < numServidores; i++) {
 			servidores[i] = new Servidor(buffer, i);
 		}
-		for(Servidor ser: servidores) {
+		
+		//Crea los clientes
+		usuarios = new Usuario[numClientes];
+		for(int i = 0; i < numClientes; i++) {
+			usuarios[i] = new Usuario(buffer, i);
+		}
+		
+		
+		//Lanza los threads de los usuarios
+		for(Usuario USSR : usuarios) {
+			USSR.start();
+		}
+		//Lanza los threads de los servidores
+		for(Servidor ser : servidores) {
 			ser.start();
 		}
 		

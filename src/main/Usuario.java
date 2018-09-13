@@ -11,7 +11,7 @@ public class Usuario extends Thread{
 	/**
 	 * Mensaje que crea el usuario para enviar
 	 */
-	private Mensaje mensaje;
+	private Mensaje[] mensajes;
 	
 	/**
 	 * Buffer al que envia el mensaje
@@ -30,22 +30,26 @@ public class Usuario extends Thread{
 	 * @param id del usuario
 	 */
 	public Usuario(Buffer buffer, int id){
-		mensaje = new Mensaje();
-		mensaje.setPregunta("pregunta #" + id);
+		mensajes = new Mensaje[1];
+		for(int i = 0;i <mensajes.length;i++ ) {
+			mensajes[i].setPregunta("pregunta #" + id +i);
+		}
 		this.buffer = buffer;
 		this.id = id;
 	}
 	
 	@Override
 	public void run() {
-		while( !buffer.enviar(mensaje)) {
-			yield();
+		for(int i = 0;i<mensajes.length; i++) {
+			while( !buffer.enviar(mensajes[i])) {
+				yield();
+			}
+			try {
+				mensajes[i].wait();
+			}catch (Exception e) {
+				e.getStackTrace();
+			}
+			mensajes[i] = buffer.atender();
 		}
-		try {
-			mensaje.wait();
-		}catch (Exception e) {
-			e.getStackTrace();
-		}
-		mensaje = buffer.atender();
 	}
 }

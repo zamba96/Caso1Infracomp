@@ -27,16 +27,14 @@ public class Buffer {
 	 */
 	
 
-	public boolean enviar(Mensaje n){
+	public synchronized boolean enviar(Mensaje n){
 		if(buffer.size()==tamanoBuffer){
 			return false;
 		}else{
-			synchronized (this) {
 				buffer.add(n);
 				clientes++;
-				semaforo.notify();
+				//semaforo.notify();
 				return true;
-			}
 		}
 	}
 	/**
@@ -47,16 +45,9 @@ public class Buffer {
 	public Mensaje atender(){
 		synchronized(this){
 			if(buffer.isEmpty()){
-				try {
-					semaforo.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				return null;
 			}
 			return buffer.remove(0);
-			
 		}
 	}
 	/**

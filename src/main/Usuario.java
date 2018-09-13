@@ -36,9 +36,9 @@ public class Usuario extends Thread{
 		this.id = id;
 	}
 	
+	@Override
 	public void run() {
-		//buffer.recibirMensaje()
-		while(-1==id ) {
+		while( !buffer.enviar(mensaje)) {
 			yield();
 		}
 		try {
@@ -46,6 +46,6 @@ public class Usuario extends Thread{
 		}catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+		mensaje = buffer.atender();
 	}
 }

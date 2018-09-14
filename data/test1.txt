@@ -1,1 +1,4 @@
-10,10,10,10
+10,30,100,500
+
+Formato del archivo:
+<tamanoBuffer>,<numServidores(threads)>,<numClientes>,<numConsultas>

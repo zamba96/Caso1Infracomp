@@ -25,7 +25,7 @@ public class Main {
 	public static final String rutaArchivo = "./data/test1.txt";
 
 	public static void main(String[] args) {
-
+		//Lee el archivo
 		File archivo = new File(rutaArchivo);
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(archivo));
@@ -46,7 +46,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		// Crea el Buffer
-		buffer = new Buffer(tamanoBuffer);
+		buffer = new Buffer(tamanoBuffer, numClientes);
 
 		// Crea los servidores
 		servidores = new Servidor[numServidores];
@@ -66,14 +66,15 @@ public class Main {
 		}
 
 		// Lanza los threads de los usuarios
-
+		/*
+		try {
+			Usuario.sleep(1000L);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 		for (Usuario USSR : usuarios) {
-			try {
-				USSR.sleep(1000L);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			USSR.start();
 		}
 

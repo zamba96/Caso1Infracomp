@@ -12,17 +12,17 @@ public class Usuario extends Thread{
 	 * Mensaje que crea el usuario para enviar
 	 */
 	private Mensaje[] mensajes;
-	
+
 	/**
 	 * Buffer al que envia el mensaje
 	 */
 	private Buffer buffer;
-	
+
 	/**
 	 * Id del usuario 
 	 */
 	private int id;
-	
+
 	/**
 	 * Constructor del cliente
 	 * Crea el mensaje y le da valor a la pregunta.
@@ -39,24 +39,28 @@ public class Usuario extends Thread{
 		this.buffer = buffer;
 		this.id = id;
 	}
-	
+
 	@Override
 	public void run() {
 		for(int i = 0;i<mensajes.length; i++) {
-			
-			while( !buffer.enviar(mensajes[i])) {
-				yield();
-			}
-			try {
-				synchronized (mensajes[i]) {
-					mensajes[i].wait();
-					System.out.println(mensajes[i].getRespuesta());
+			synchronized (mensajes[i]) {
+				while( !buffer.enviar(mensajes[i])) {
+					System.out.println("usuario yield: " + id);
+					yield();
 				}
-				
-			}catch (Exception e) {
-				e.getStackTrace();
+				try {
+
+					mensajes[i].wait();
+					//System.out.println(mensajes[i].getRespuesta());
+
+
+				}catch (Exception e) {
+					e.getStackTrace();
+				}
 			}
 			//mensajes[i] = buffer.atender();
 		}
+		buffer.retirarUsuario();
+		System.out.println("-------------------------------------\nAcaba el usuario: " + id + "\n-------------------------------------");
 	}
 }
